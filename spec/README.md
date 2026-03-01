@@ -11,7 +11,7 @@ These files are intended to be the executable contract for:
 
 - SDK generation and typed client/server scaffolding
 - Conformance checks in CI
-- Bridge mapping validation (MCP/A2A -> FP)
+- Cross-runtime interoperability validation
 
 ## Validation
 

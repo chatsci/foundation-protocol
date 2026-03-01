@@ -240,6 +240,72 @@ class CoreConformanceTests(unittest.TestCase):
         self.assertEqual(first.activity_id, second.activity_id)
         self.assertIs(first.state, ActivityState.WORKING)
 
+    def test_sessions_create_rejects_unregistered_participant(self) -> None:
+        server = FPServer()
+        server.register_entity(make_default_entity("fp:agent:a", EntityKind.AGENT))
+
+        with self.assertRaises(FPError) as exc:
+            server.sessions_create(
+                participants={"fp:agent:a", "fp:agent:ghost"},
+                roles={"fp:agent:a": {"coordinator"}, "fp:agent:ghost": {"worker"}},
+            )
+        self.assertIs(exc.exception.code, FPErrorCode.NOT_FOUND)
+
+    def test_activity_start_rejects_unknown_session(self) -> None:
+        server = FPServer()
+        server.register_entity(make_default_entity("fp:agent:a", EntityKind.AGENT))
+        server.register_entity(make_default_entity("fp:agent:b", EntityKind.AGENT))
+
+        with self.assertRaises(FPError) as exc:
+            server.activities_start(
+                session_id="sess-missing",
+                owner_entity_id="fp:agent:b",
+                initiator_entity_id="fp:agent:a",
+                operation="task.any",
+                input_payload={},
+            )
+        self.assertIs(exc.exception.code, FPErrorCode.NOT_FOUND)
+
+    def test_activity_start_rejects_non_participant_owner(self) -> None:
+        server = FPServer()
+        session_id = _register_basics(server)
+        server.register_entity(make_default_entity("fp:agent:c", EntityKind.AGENT))
+
+        with self.assertRaises(FPError) as exc:
+            server.activities_start(
+                session_id=session_id,
+                owner_entity_id="fp:agent:c",
+                initiator_entity_id="fp:agent:a",
+                operation="task.any",
+                input_payload={},
+            )
+        self.assertIs(exc.exception.code, FPErrorCode.AUTHZ_DENIED)
+
+    def test_events_stream_rejects_unknown_session(self) -> None:
+        server = FPServer()
+        with self.assertRaises(FPError) as exc:
+            server.events_stream(session_id="sess-missing")
+        self.assertIs(exc.exception.code, FPErrorCode.NOT_FOUND)
+
+    def test_settlement_rejects_unknown_receipt_refs(self) -> None:
+        server = FPServer()
+        with self.assertRaises(FPError) as exc:
+            server.settlements_create(
+                receipt_refs=["rcpt-missing"],
+                settlement_ref="payment://missing",
+            )
+        self.assertIs(exc.exception.code, FPErrorCode.NOT_FOUND)
+
+    def test_sessions_update_rejects_unknown_roles_patch_entity(self) -> None:
+        server = FPServer()
+        session_id = _register_basics(server)
+        with self.assertRaises(FPError) as exc:
+            server.sessions_update(
+                session_id=session_id,
+                roles_patch={"fp:agent:ghost": {"observer"}},
+            )
+        self.assertIs(exc.exception.code, FPErrorCode.NOT_FOUND)
+
 
 if __name__ == "__main__":
     unittest.main()

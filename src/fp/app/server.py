@@ -200,6 +200,8 @@ class FPServer:
         budget: SessionBudget | None = None,
         session_id: str | None = None,
     ) -> Session:
+        for participant in participants:
+            self._require_entity(participant)
         created = self.sessions.create(
             session_id=session_id or _new_id("sess"),
             participants=participants,
@@ -217,6 +219,7 @@ class FPServer:
         return created
 
     def sessions_join(self, *, session_id: str, entity_id: str, roles: set[str] | None = None) -> Session:
+        self._require_entity(entity_id)
         updated = self.sessions.join(session_id, entity_id, roles)
         self._emit_event(
             event_type="session.joined",
@@ -235,6 +238,9 @@ class FPServer:
         state: SessionState | None = None,
         roles_patch: dict[str, set[str]] | None = None,
     ) -> Session:
+        if roles_patch:
+            for entity_id in roles_patch:
+                self._require_entity(entity_id)
         updated = self.sessions.update(
             session_id,
             policy_ref=policy_ref,
@@ -290,6 +296,27 @@ class FPServer:
         idempotency_key: str | None = None,
         auto_execute: bool = True,
     ) -> Activity:
+        self._require_entity(owner_entity_id)
+        self._require_entity(initiator_entity_id)
+        session = self.sessions.get(session_id)
+        if session.state is not SessionState.ACTIVE:
+            raise FPError(
+                FPErrorCode.INVALID_STATE_TRANSITION,
+                message=f"cannot start activity in session state: {session.state.value}",
+            )
+        if owner_entity_id not in session.participants:
+            raise FPError(
+                FPErrorCode.AUTHZ_DENIED,
+                message="activity owner must be a session participant",
+                details={"session_id": session_id, "owner_entity_id": owner_entity_id},
+            )
+        if initiator_entity_id not in session.participants:
+            raise FPError(
+                FPErrorCode.AUTHZ_DENIED,
+                message="activity initiator must be a session participant",
+                details={"session_id": session_id, "initiator_entity_id": initiator_entity_id},
+            )
+
         request_fingerprint = self._idempotency_fingerprint(
             session_id=session_id,
             owner_entity_id=owner_entity_id,
@@ -454,6 +481,7 @@ class FPServer:
         activity_id: str | None = None,
         from_event_id: str | None = None,
     ) -> dict[str, Any]:
+        self.sessions.get(session_id)
         handle = self.events.stream(session_id=session_id, activity_id=activity_id, from_event_id=from_event_id)
         return asdict(handle)
 
@@ -544,6 +572,9 @@ class FPServer:
         currency: str | None = None,
         actor_entity_id: str | None = None,
     ) -> Settlement:
+        for receipt_ref in receipt_refs:
+            if self.stores.receipts.get(receipt_ref) is None:
+                raise FPError(FPErrorCode.NOT_FOUND, f"receipt not found: {receipt_ref}")
         self._enforce_policy(
             hook=PolicyHook.PRE_SETTLE,
             actor_entity_id=actor_entity_id,
@@ -709,6 +740,9 @@ class FPServer:
             producer_entity_id="fp:system:org-registry",
             payload=payload,
         )
+
+    def _require_entity(self, entity_id: str) -> Entity:
+        return self.entities.get(entity_id)
 
     @staticmethod
     def _idempotency_fingerprint(

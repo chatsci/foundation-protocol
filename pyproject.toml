@@ -28,6 +28,7 @@ dependencies = []
 [project.optional-dependencies]
 dev = [
   "pytest>=8.0",
+  "jsonschema>=4.20",
 ]
 docs = [
   "mkdocs>=1.6",

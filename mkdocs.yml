@@ -35,5 +35,8 @@ nav:
   - Home: index.md
   - Getting Started: getting-started.md
   - Architecture: architecture.md
+  - White Paper Alignment: whitepaper-alignment.md
+  - Examples: examples.md
   - Operations: operations.md
+  - Release Readiness: release-readiness.md
   - API Reference: api.md

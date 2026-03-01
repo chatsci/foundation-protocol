@@ -1,0 +1,1 @@
+"""Section-aligned scenario examples."""

@@ -24,10 +24,12 @@ Cross-cutting modules:
 - `fp.stores`: abstract contracts + in-memory / sqlite / redis stubs
 - `fp.adapters`: framework integration boundary (L0 contract)
 - `fp.transport`: protocol transport adapters (inproc/stdio/http/sse/ws)
+- `fp.transport.http_jsonrpc.JSONRPCDispatcher`: JSON-RPC 2.0 method dispatch layer
 
 ## Reliability semantics
 
 - Activity transitions are validated by a canonical state machine.
+- Activity start requires active session and participant-consistent owner/initiator.
 - Idempotency keys are fingerprinted; conflicting payload reuse is rejected.
 - Event streams support replay + resubscribe + ack.
 - Backpressure enforces bounded unacked delivery windows.

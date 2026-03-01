@@ -4,7 +4,7 @@ from fp.app import FPServer, make_default_entity
 from fp.protocol import EntityKind
 
 
-def main() -> None:
+def run_example() -> dict:
     server = FPServer()
     server.register_entity(make_default_entity("fp:agent:planner", EntityKind.AGENT))
     server.register_entity(make_default_entity("fp:tool:weather", EntityKind.TOOL))
@@ -24,8 +24,14 @@ def main() -> None:
         input_payload={"city": "Paris"},
     )
 
-    print(activity.state.value)
-    print(server.activities_result(activity_id=activity.activity_id))
+    result = server.activities_result(activity_id=activity.activity_id)["result"]
+    return {"state": activity.state.value, "result": result}
+
+
+def main() -> None:
+    output = run_example()
+    print(output["state"])
+    print(output["result"])
 
 
 if __name__ == "__main__":

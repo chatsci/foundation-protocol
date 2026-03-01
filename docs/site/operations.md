@@ -5,10 +5,10 @@
 Run this before release:
 
 ```bash
-PYTHONPATH=src python3 -m unittest discover -s tests -p 'test_*.py' -q
-python3 -m compileall -q src tests
-python3 scripts/validate_specs.py
+bash scripts/quality_gate.sh
 ```
+
+This command runs tests, executes runnable examples, validates spec artifacts, and checks Python compilation.
 
 ## Documentation workflow
 
@@ -40,8 +40,7 @@ The generated site is written to `site/`.
 
 ## CI recommendation
 
-Use the following checks in CI:
+CI workflows:
 
-1. `scripts/run_tests.sh`
-2. `python3 scripts/validate_specs.py`
-3. `scripts/build_docs.sh` (strict mode enabled in `mkdocs.yml`)
+1. `ci.yml` runs `scripts/quality_gate.sh`.
+2. `docs.yml` builds and deploys GitHub Pages using strict MkDocs mode.
