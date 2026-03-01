@@ -166,6 +166,10 @@ Published site (GitHub Pages):
 
 - https://chatsci.github.io/foundation-protocol/
 
+Comic-style introduction:
+
+- https://chatsci.github.io/foundation-protocol/comic-guide/
+
 ## CI workflows
 
 - `.github/workflows/ci.yml`: quality gate for push + pull request
