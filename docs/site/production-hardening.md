@@ -10,6 +10,7 @@ This page summarizes the hardening layer added on top of the FP reference runtim
 - role patch validation rejects empty role sets
 - push config schema validation with required fields and URL constraints
 - stream backpressure windows isolated per stream
+- native async activity dispatch path for in-process async runtimes (no thread-bridge in core async engines)
 
 ### Integrity and safety
 

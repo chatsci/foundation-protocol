@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 from typing import Any
 
 from fp.protocol import Activity, ActivityState
@@ -24,8 +23,7 @@ class AsyncActivityEngine:
         operation: str,
         input_payload: dict[str, Any],
     ) -> Activity:
-        return await asyncio.to_thread(
-            self._engine.start,
+        return self._engine.start(
             activity_id=activity_id,
             session_id=session_id,
             owner_entity_id=owner_entity_id,
@@ -35,7 +33,7 @@ class AsyncActivityEngine:
         )
 
     async def get(self, activity_id: str) -> Activity:
-        return await asyncio.to_thread(self._engine.get, activity_id)
+        return self._engine.get(activity_id)
 
     async def transition(
         self,
@@ -45,8 +43,7 @@ class AsyncActivityEngine:
         status_message: str | None = None,
         patch: dict[str, Any] | None = None,
     ) -> Activity:
-        return await asyncio.to_thread(
-            self._engine.transition,
+        return self._engine.transition(
             activity_id,
             next_state=next_state,
             status_message=status_message,
@@ -60,18 +57,17 @@ class AsyncActivityEngine:
         result_payload: dict[str, Any] | None = None,
         result_ref: str | None = None,
     ) -> Activity:
-        return await asyncio.to_thread(
-            self._engine.complete,
+        return self._engine.complete(
             activity_id,
             result_payload=result_payload,
             result_ref=result_ref,
         )
 
     async def fail(self, activity_id: str, *, message: str, details: dict[str, Any] | None = None) -> Activity:
-        return await asyncio.to_thread(self._engine.fail, activity_id, message=message, details=details)
+        return self._engine.fail(activity_id, message=message, details=details)
 
     async def cancel(self, activity_id: str, *, reason: str | None = None) -> Activity:
-        return await asyncio.to_thread(self._engine.cancel, activity_id, reason=reason)
+        return self._engine.cancel(activity_id, reason=reason)
 
     async def list(
         self,
@@ -80,8 +76,7 @@ class AsyncActivityEngine:
         state: ActivityState | None = None,
         owner_entity_id: str | None = None,
     ) -> list[Activity]:
-        return await asyncio.to_thread(
-            self._engine.list,
+        return self._engine.list(
             session_id=session_id,
             state=state,
             owner_entity_id=owner_entity_id,

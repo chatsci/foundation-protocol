@@ -154,6 +154,7 @@ The quality gate runs:
 
 - `FPClient` uses a single transport invocation path (no server bypass path)
 - `AsyncFPServer` public APIs have explicit named signatures
+- In-process async runtime path executes natively (core async engines and async server facade avoid thread-bridge execution)
 - SQLite persistence uses JSON codec (no pickle serialization)
 - `RemoteFPClient` composes shared HTTP JSON-RPC transport logic
 - Paged listing semantics (`limit` + `cursor`) are available across runtime/store surfaces

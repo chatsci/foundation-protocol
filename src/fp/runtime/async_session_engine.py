@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
-
 from fp.protocol import Session, SessionBudget, SessionState
 from fp.runtime.session_engine import SessionEngine
 from fp.stores.interfaces import SessionStore
@@ -23,8 +21,7 @@ class AsyncSessionEngine:
         budget: SessionBudget | None = None,
         metadata: dict[str, str] | None = None,
     ) -> Session:
-        return await asyncio.to_thread(
-            self._engine.create,
+        return self._engine.create(
             session_id=session_id,
             participants=participants,
             roles=roles,
@@ -34,13 +31,13 @@ class AsyncSessionEngine:
         )
 
     async def get(self, session_id: str) -> Session:
-        return await asyncio.to_thread(self._engine.get, session_id)
+        return self._engine.get(session_id)
 
     async def join(self, session_id: str, entity_id: str, roles: set[str] | None = None) -> Session:
-        return await asyncio.to_thread(self._engine.join, session_id, entity_id, roles)
+        return self._engine.join(session_id, entity_id, roles)
 
     async def leave(self, session_id: str, entity_id: str) -> Session:
-        return await asyncio.to_thread(self._engine.leave, session_id, entity_id)
+        return self._engine.leave(session_id, entity_id)
 
     async def update(
         self,
@@ -51,8 +48,7 @@ class AsyncSessionEngine:
         state: SessionState | None = None,
         roles_patch: dict[str, set[str]] | None = None,
     ) -> Session:
-        return await asyncio.to_thread(
-            self._engine.update,
+        return self._engine.update(
             session_id,
             policy_ref=policy_ref,
             budget=budget,
@@ -61,7 +57,7 @@ class AsyncSessionEngine:
         )
 
     async def close(self, session_id: str, reason: str | None = None) -> Session:
-        return await asyncio.to_thread(self._engine.close, session_id, reason)
+        return self._engine.close(session_id, reason)
 
     async def list(self) -> list[Session]:
-        return await asyncio.to_thread(self._engine.list)
+        return self._engine.list()
