@@ -7,7 +7,6 @@ theme:
   name: material
   language: en
   features:
-    - navigation.instant
     - navigation.sections
     - content.code.copy
 plugins:

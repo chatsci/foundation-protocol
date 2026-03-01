@@ -511,9 +511,7 @@ Use this section directly as slide plan.
 ## 13) Related pages
 
 - [Home](index.md)
-- [Concept Guide](concept-guide.md)
 - [Getting Started](getting-started.md)
 - [Architecture](architecture.md)
-- [Examples](examples.md)
-- [Operations](operations.md)
+- [Example](examples.md)
 - [API Reference](api.md)
