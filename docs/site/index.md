@@ -158,7 +158,7 @@ FP runtime is designed with high signal-to-noise semantics:
 ## Navigation
 
 - **Start now**: [Getting Started](getting-started.md)
-- **See architecture boundaries**: [Architecture](architecture.md)
+- **See architecture boundaries (Mermaid + ASCII diagrams)**: [Architecture](architecture.md)
 - **Validate white-paper intent**: [White Paper Alignment](whitepaper-alignment.md)
 - **Run real scenarios**: [Examples](examples.md)
 - **Check release checklist**: [Release Readiness](release-readiness.md)

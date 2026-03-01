@@ -1,5 +1,82 @@
 # Architecture
 
+## ASCII code architecture
+
+```text
+foundation-protocol/
+├── src/fp/
+│   ├── quickstart/        # Fast embedding APIs (Agent/Tool/Service/Resource)
+│   ├── app/               # FPServer / FPClient composition boundary
+│   ├── protocol/          # Canonical models, enums, errors, method contracts
+│   ├── graph/             # Entity / Organization / Membership semantics
+│   ├── runtime/           # Session / Activity / Event / Dispatch / Idempotency engines
+│   ├── economy/           # Meter -> Receipt -> Settlement -> Dispute
+│   ├── policy/            # Policy hooks + decisions
+│   ├── observability/     # Metrics / token-cost / trace / audit export
+│   ├── stores/            # Store interfaces + memory/sqlite/redis bundles
+│   ├── transport/         # inproc / stdio / sse / websocket / jsonrpc / http publish
+│   ├── federation/        # Server-card directory, resolver, remote client
+│   ├── adapters/          # Framework adapter contracts
+│   ├── security/          # Signatures + auth/authz helpers
+│   ├── profiles/          # Protocol profile presets
+│   └── registry/          # Schema / event type / pattern registries
+├── tests/
+│   ├── unit/
+│   ├── conformance/
+│   ├── integration/
+│   └── perf/
+├── examples/
+│   ├── quickstart/
+│   └── scenarios/
+└── docs/site/
+```
+
+```text
+                 +---------------------------------------------+
+                 |                 FPServer                    |
+                 |---------------------------------------------|
+                 | app.server API                              |
+                 +-------------------------+-------------------+
+                                           |
+      +----------------------+-------------+--------------+--------------------+
+      |                      |                            |                    |
+      v                      v                            v                    v
++-----------+        +--------------+            +---------------+      +-------------+
+| protocol  |<------>| runtime      |<---------->| stores        |      | transport   |
+| models    |        | engines      |            | (memory/...)  |      | jsonrpc/... |
++-----+-----+        +------+-------+            +---------------+      +------+------+ 
+      |                     |                                              |
+      |                     +---------------------+------------------------+
+      |                                           |
+      v                                           v
++-------------+                            +--------------+
+| policy      |---- provenance ----------->| observability|
+| hooks       |                            | + audit      |
++------+------+                            +------+-------+
+       |                                           |
+       v                                           v
+  +----+-------------------------------------------+----+
+  |                  economy pipeline                    |
+  |       meter -> receipt -> settlement -> dispute      |
+  +------------------------------------------------------+
+```
+
+```text
+Federated collaboration path
+
+Entity A publishes FPServer
+   |
+   +--> /.well-known/fp-server.json  (FPServerCard)
+   |
+Directory/Resolver indexes by entity_id
+   |
+Entity B resolves target entity_id
+   |
+RemoteFPClient -> JSON-RPC -> target FPServer
+   |
+sessions / activities / events / receipts / settlements
+```
+
 ## Layered design
 
 ```text
