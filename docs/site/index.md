@@ -14,13 +14,12 @@ FP helps you run AI systems that are:
 - **auditable** (not log-forensics-only)
 - **economically accountable** (not opaque cost centers)
 
-## New: FP Comic Guide
+## Start with Concept and Codebase
 
-Prefer a visual explanation first? Start here:
+Use these two pages first:
 
-- [FP Comic Guide](comic-guide.md)
-
-It explains FP with scene-by-scene narrative: discovery, collaboration, governance, settlement, and token-efficient execution.
+- [FP Concept Guide](concept-guide.md): intuitive narrative for discovery, collaboration, governance, settlement, and token-efficient execution
+- [FP Codebase Guide (PPT-ready)](codebase-guide.md): detailed architecture, module responsibilities, feature inventory, and practical embedding patterns
 
 ## Is FP right for your system?
 
@@ -203,6 +202,7 @@ FP runtime is designed with high signal-to-noise semantics:
 ## Navigation
 
 - **Start now**: [Getting Started](getting-started.md)
+- **Detailed code-level architecture and feature map**: [Codebase Guide](codebase-guide.md)
 - **See architecture boundaries (Mermaid + ASCII diagrams)**: [Architecture](architecture.md)
 - **Run real scenarios**: [Examples](examples.md)
 - **Run and deploy safely**: [Operations](operations.md)

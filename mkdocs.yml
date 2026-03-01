@@ -40,8 +40,9 @@ extra_javascript:
 strict: true
 nav:
   - Home: index.md
-  - Comic Guide: comic-guide.md
+  - Concept Guide: concept-guide.md
   - Getting Started: getting-started.md
+  - Codebase Guide: codebase-guide.md
   - Architecture: architecture.md
   - Examples: examples.md
   - Operations: operations.md

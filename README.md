@@ -158,9 +158,13 @@ Published site (GitHub Pages):
 
 - https://chatsci.github.io/foundation-protocol/
 
-Comic-style introduction:
+Concept walkthrough:
 
-- https://chatsci.github.io/foundation-protocol/comic-guide/
+- https://chatsci.github.io/foundation-protocol/concept-guide/
+
+Detailed codebase guide (PPT-ready):
+
+- https://chatsci.github.io/foundation-protocol/codebase-guide/
 
 ## CI workflows
 

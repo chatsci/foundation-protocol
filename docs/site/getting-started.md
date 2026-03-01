@@ -2,7 +2,7 @@
 
 This guide takes you from zero setup to a runnable FP integration.
 
-If you want the conceptual picture first, read [FP Comic Guide](comic-guide.md) and come back here for the implementation path.
+If you want the conceptual picture first, read [FP Concept Guide](concept-guide.md) and come back here for the implementation path.
 
 By the end, you will be able to:
 

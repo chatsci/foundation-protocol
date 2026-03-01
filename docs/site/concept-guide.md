@@ -1,6 +1,6 @@
-# FP Comic Guide
+# FP Concept Guide
 
-A visual story for what FP does, why it matters, and how to use it in practice.
+An intuitive walkthrough of what FP does, why it matters, and how to use it in practice.
 
 ## Episode 1: The Old World (ad-hoc integrations)
 
@@ -133,7 +133,7 @@ The result is operational trust:
 - Tool/service owners: publish their own FP server cards.
 - Buyers/consumers: resolve entity ids and collaborate remotely.
 
-## 5-minute path after this comic
+## 5-minute path after this guide
 
 1. run [Getting Started](getting-started.md)
 2. run full scenarios from [Examples](examples.md)
