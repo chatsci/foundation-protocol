@@ -14,12 +14,9 @@ FP helps you run AI systems that are:
 - **auditable** (not log-forensics-only)
 - **economically accountable** (not opaque cost centers)
 
-## Start with Concept and Execution
+## Start Here
 
-Use these two pages first:
-
-- [FP Concept Guide](concept-guide.md): intuitive narrative for discovery, collaboration, governance, settlement, and token-efficient execution
-- [Getting Started](getting-started.md): direct path to run FP locally and build your first workflow
+Use [Getting Started](getting-started.md) to run FP locally and build your first workflow.
 
 ## Is FP right for your system?
 
@@ -181,7 +178,6 @@ Runnable scenario set: [Examples](examples.md)
 2. Execute all scenario examples: `bash scripts/run_examples.sh`.
 3. Run quality gate: `bash scripts/quality_gate.sh`.
 4. Inspect API entry points in [API Reference](api.md).
-5. Review runtime and deployment checks in [Operations](operations.md).
 
 ## Engineering posture
 
@@ -203,6 +199,5 @@ FP runtime is designed with high signal-to-noise semantics:
 
 - **Start now**: [Getting Started](getting-started.md)
 - **See architecture boundaries (Mermaid + ASCII diagrams)**: [Architecture](architecture.md)
-- **Run real scenarios**: [Examples](examples.md)
-- **Run and deploy safely**: [Operations](operations.md)
+- **Run real scenarios**: [Example](examples.md)
 - **Browse full API surface**: [API Reference](api.md)

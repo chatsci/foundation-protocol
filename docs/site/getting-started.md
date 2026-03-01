@@ -2,8 +2,6 @@
 
 This guide takes you from zero setup to a runnable FP integration.
 
-If you want the conceptual picture first, read [FP Concept Guide](concept-guide.md) and come back here for the implementation path.
-
 By the end, you will be able to:
 
 - create a multi-entity FP session
@@ -258,6 +256,5 @@ Fix: install `.[docs]` extras or rely on CI docs workflow.
 ## Next steps
 
 1. Review [Architecture](architecture.md) for component boundaries.
-2. Review [Examples](examples.md) for scenario-level integration templates.
-3. Review [Operations](operations.md) for quality gates and deployment workflow.
-4. Review [API Reference](api.md) for full callable surface.
+2. Review [Example](examples.md) for scenario-level integration templates.
+3. Review [API Reference](api.md) for full callable surface.

@@ -158,10 +158,6 @@ Published site (GitHub Pages):
 
 - https://chatsci.github.io/foundation-protocol/
 
-Concept walkthrough:
-
-- https://chatsci.github.io/foundation-protocol/concept-guide/
-
 Detailed internal codebase guide (repository doc, not published online):
 
 - docs/fp-codebase-guide.md
