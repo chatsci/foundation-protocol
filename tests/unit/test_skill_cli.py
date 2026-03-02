@@ -22,6 +22,8 @@ def test_cli_smoke_manifest() -> None:
             "weather.lookup",
             "--payload",
             '{"city":"Tokyo"}',
+            "--idempotency-key",
+            "idem-cli-weather-001",
         ]
     )
     assert rc == 0

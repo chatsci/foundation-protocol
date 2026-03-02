@@ -31,7 +31,11 @@ def _cmd_smoke(args: argparse.Namespace) -> int:
         if args.operation not in loaded:
             raise SkillManifestError(f"operation not declared in manifest: {args.operation}")
         payload = json.loads(args.payload) if args.payload else {}
-        result = runtime.invoke(operation=args.operation, input_payload=payload)
+        result = runtime.invoke(
+            operation=args.operation,
+            input_payload=payload,
+            idempotency_key=args.idempotency_key,
+        )
         print(json.dumps(_jsonable(result), ensure_ascii=False, indent=2, sort_keys=True))
     return 0
 
@@ -66,6 +70,7 @@ def build_parser() -> argparse.ArgumentParser:
     smoke.add_argument("manifest", type=Path)
     smoke.add_argument("--operation", type=str, default=None)
     smoke.add_argument("--payload", type=str, default="{}")
+    smoke.add_argument("--idempotency-key", type=str, default=None)
     smoke.set_defaults(func=_cmd_smoke)
 
     return parser

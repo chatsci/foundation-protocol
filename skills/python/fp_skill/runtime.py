@@ -5,7 +5,6 @@ from __future__ import annotations
 import importlib
 import os
 from dataclasses import replace
-from datetime import datetime, timezone
 from typing import Any, Callable
 from uuid import uuid4
 
@@ -125,7 +124,9 @@ class SkillRuntime:
             initiator_entity_id=initiator,
             operation=operation,
             input_payload=input_payload,
-            idempotency_key=idempotency_key or _default_idempotency_key(operation),
+            # Idempotency is opt-in: callers must provide a stable key explicitly.
+            # A generated random key would not provide replay protection semantics.
+            idempotency_key=idempotency_key,
         )
         return self.server.activities_result(activity_id=activity.activity_id)
 
@@ -142,11 +143,6 @@ class SkillRuntime:
                 keep_alive=self.manifest.connection.keep_alive,
             )
         raise SkillRuntimeError(f"unsupported connection mode: {mode}")
-
-
-def _default_idempotency_key(operation: str) -> str:
-    ts = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
-    return f"skill-{operation}-{ts}-{uuid4().hex[:8]}"
 
 
 def _load_handler(handler_ref: str) -> Callable[..., Any]:

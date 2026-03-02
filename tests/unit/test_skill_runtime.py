@@ -53,3 +53,31 @@ def test_skill_runtime_inproc_client() -> None:
     ping = client.ping()
     assert ping["ok"] is True
     assert "fp_version" in ping
+
+
+def test_skill_runtime_default_invoke_is_not_idempotent() -> None:
+    runtime = SkillRuntime(_manifest())
+    runtime.load_manifest_operations()
+
+    first = runtime.invoke(operation="weather.lookup", input_payload={"city": "Rome"})
+    second = runtime.invoke(operation="weather.lookup", input_payload={"city": "Rome"})
+
+    assert first["activity"].activity_id != second["activity"].activity_id
+
+
+def test_skill_runtime_explicit_idempotency_key_reuses_activity() -> None:
+    runtime = SkillRuntime(_manifest())
+    runtime.load_manifest_operations()
+
+    first = runtime.invoke(
+        operation="weather.lookup",
+        input_payload={"city": "Madrid"},
+        idempotency_key="idem-weather-madrid-001",
+    )
+    second = runtime.invoke(
+        operation="weather.lookup",
+        input_payload={"city": "Madrid"},
+        idempotency_key="idem-weather-madrid-001",
+    )
+
+    assert first["activity"].activity_id == second["activity"].activity_id

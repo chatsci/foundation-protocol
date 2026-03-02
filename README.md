@@ -131,6 +131,14 @@ PYTHONPATH=src:skills/python python3 -m fp_skill smoke skills/examples/weather.s
   --operation weather.lookup --payload '{"city":"Paris"}'
 ```
 
+Run with explicit idempotency key (recommended):
+
+```bash
+PYTHONPATH=src:skills/python python3 -m fp_skill smoke skills/examples/weather.skill.json \
+  --operation weather.lookup --payload '{"city":"Paris"}' \
+  --idempotency-key idem-weather-paris-001
+```
+
 ## Federated publish/discover/connect
 
 FP now supports entity-owned runtime publication and network discovery:
@@ -184,6 +192,7 @@ Published site (GitHub Pages):
 Detailed internal codebase guide (repository doc, not published online):
 
 - docs/fp-codebase-guide.md
+- docs/fp-skill-deployment-guide-zh.md
 
 ## CI workflows
 

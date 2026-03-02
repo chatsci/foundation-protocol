@@ -41,6 +41,23 @@ PYTHONPATH=src:skills/python python3 -m fp_skill smoke skills/examples/weather.s
   --operation weather.lookup --payload '{"city":"Paris"}'
 ```
 
+Smoke with explicit idempotency key (recommended for retry-safe callers):
+
+```bash
+PYTHONPATH=src:skills/python python3 -m fp_skill smoke skills/examples/weather.skill.json \
+  --operation weather.lookup --payload '{"city":"Paris"}' \
+  --idempotency-key idem-weather-paris-001
+```
+
+## Runtime behavior notes
+
+- Skill runtime auto-registers the manifest entity and orchestrator entity.
+- If `defaults.auto_session=true`, runtime auto-creates/reuses one session.
+- Idempotency is opt-in: `idempotency_key` must be supplied explicitly.
+  - no key => each invoke creates a new activity
+  - same key + same fingerprint => activity result reuse
+  - same key + different fingerprint => conflict
+
 ## Why this exists
 
 Skill layer reduces FP adoption friction:
