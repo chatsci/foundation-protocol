@@ -106,3 +106,25 @@ Run:
 ```bash
 PYTHONPATH=src python3 -m examples.scenarios.federated_discovery_trade
 ```
+
+### 7) Skill manifest onboarding (non-intrusive integration)
+
+Files:
+
+- `skills/examples/weather.skill.json`
+- `skills/examples/weather_handlers.py`
+
+Shows:
+
+- machine-readable manifest for entity/capability/connection/auth defaults
+- runtime bootstrap without changing internal business handler logic
+- local invoke path with explicit idempotency key
+
+Run:
+
+```bash
+PYTHONPATH=src:skills/python python3 -m fp_skill validate skills/examples/weather.skill.json
+PYTHONPATH=src:skills/python python3 -m fp_skill smoke skills/examples/weather.skill.json \
+  --operation weather.lookup --payload '{"city":"Paris"}' \
+  --idempotency-key idem-weather-paris-001
+```

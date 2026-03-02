@@ -42,6 +42,37 @@ Expected output shape:
 
 This validates your local environment and FP import path.
 
+## 1.5) Skill-based onboarding (zero-intrusion path)
+
+If your system already has agent/tool/service logic, use FP Skill onboarding first.
+
+Why this path is preferred:
+
+- no need to rewrite your core business handlers
+- manifest-driven bootstrap can be executed by humans or autonomous agents
+- FP wiring (entity/session/activity) is automated in one runtime layer
+
+Validate skill manifest:
+
+```bash
+PYTHONPATH=src:skills/python python3 -m fp_skill validate skills/examples/weather.skill.json
+```
+
+Run local smoke bootstrap:
+
+```bash
+PYTHONPATH=src:skills/python python3 -m fp_skill smoke skills/examples/weather.skill.json \
+  --operation weather.lookup --payload '{"city":"Paris"}' \
+  --idempotency-key idem-weather-paris-001
+```
+
+What this proves:
+
+- manifest is protocol-valid
+- operation handlers load correctly
+- FP runtime can auto-register entities and execute activities
+- your business logic remains unchanged
+
 ## 2) Build your first FP workflow (minimal but real)
 
 Create `demo_fp.py` and run it.

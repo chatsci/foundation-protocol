@@ -14,6 +14,18 @@ FP helps you run AI systems that are:
 - **auditable** (not log-forensics-only)
 - **economically accountable** (not opaque cost centers)
 
+## Easy Adoption
+
+FP is designed to be adoptable without rewriting your agent's internal logic.
+
+The recommended onboarding path is a skill layer:
+
+- declare entity/capabilities/connection/auth in a machine-readable manifest
+- let agent runtime load the skill and auto-bootstrap FP wiring
+- keep business handlers focused on domain logic only
+
+This means teams can adopt FP as a control plane around existing agents, tools, and services, instead of replacing their architecture.
+
 ## Start Here
 
 Use [Getting Started](getting-started.md) to run FP locally and build your first workflow.
@@ -151,6 +163,7 @@ FPServer (facade)
 - app-layer server/client APIs for production wiring
 - JSON-RPC dispatcher for service-facing protocol endpoints
 - publish/discover/connect primitives for federated FP servers
+- skill-manifest onboarding for low-friction, non-intrusive integration
 
 ## End-to-end control-plane loop
 
