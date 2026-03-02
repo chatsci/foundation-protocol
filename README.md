@@ -139,6 +139,36 @@ PYTHONPATH=src:skills/python python3 -m fp_skill smoke skills/examples/weather.s
   --idempotency-key idem-weather-paris-001
 ```
 
+### Agent-autonomous FP onboarding
+
+The skill design is machine-readable first (`manifest.schema.json` + JSON manifest), so capable agents can self-bootstrap into FP with minimal human operations.
+
+Typical autonomous flow:
+
+1. Agent reads a skill manifest (`*.skill.json`).
+2. Agent validates it against the schema.
+3. Agent loads handlers and bootstraps `SkillRuntime`.
+4. Agent invokes FP operations through `SkillRuntime.invoke(...)`.
+5. Agent optionally publishes to network/federation path.
+
+```python
+from fp_skill.manifest import load_manifest
+from fp_skill.runtime import SkillRuntime
+
+manifest = load_manifest("skills/examples/weather.skill.json")
+runtime = SkillRuntime(manifest)
+runtime.load_manifest_operations()
+
+result = runtime.invoke(
+    operation="weather.lookup",
+    input_payload={"city": "Paris"},
+    idempotency_key="idem-weather-paris-001",
+)
+print(result["result"])
+```
+
+This means humans only need to define capability + policy defaults once in a manifest; recurring FP wiring can be delegated to agents.
+
 ## Federated publish/discover/connect
 
 FP now supports entity-owned runtime publication and network discovery:
