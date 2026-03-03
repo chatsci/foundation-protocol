@@ -74,6 +74,12 @@ def _expect_string(value: Any, field: str) -> str:
     return value
 
 
+def _expect_int(value: Any, field: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(f"{field} must be an integer")
+    return value
+
+
 def validate_semantic(raw: dict[str, Any]) -> None:
     _expect_string(raw.get("skill_spec_version"), "skill_spec_version")
     if raw.get("skill_spec_version") != "0.1":
@@ -112,6 +118,34 @@ def validate_semantic(raw: dict[str, Any]) -> None:
         _expect_string(auth.get("token_env"), "auth.token_env")
     if auth_mode == "bearer_static":
         _expect_string(auth.get("token"), "auth.token")
+
+    defaults = raw.get("defaults")
+    if not isinstance(defaults, dict):
+        raise ValueError("defaults must be an object")
+    auto_session = defaults.get("auto_session")
+    if not isinstance(auto_session, bool):
+        raise ValueError("defaults.auto_session must be a boolean")
+    default_roles = defaults.get("default_roles")
+    if not isinstance(default_roles, dict):
+        raise ValueError("defaults.default_roles must be an object")
+    if auto_session and not default_roles:
+        raise ValueError("defaults.default_roles must be non-empty when auto_session=true")
+    for entity_id, roles in default_roles.items():
+        _expect_string(entity_id, "defaults.default_roles key")
+        if not isinstance(roles, list) or not roles:
+            raise ValueError(f"defaults.default_roles[{entity_id}] must be a non-empty list")
+        for index, role in enumerate(roles):
+            _expect_string(role, f"defaults.default_roles[{entity_id}][{index}]")
+
+    token_limit = defaults.get("token_limit")
+    if token_limit is not None:
+        if _expect_int(token_limit, "defaults.token_limit") <= 0:
+            raise ValueError("defaults.token_limit must be > 0 when provided")
+
+    result_compaction = defaults.get("result_compaction_bytes")
+    if result_compaction is not None:
+        if _expect_int(result_compaction, "defaults.result_compaction_bytes") <= 0:
+            raise ValueError("defaults.result_compaction_bytes must be > 0 when provided")
 
     operations = raw.get("operations")
     if not isinstance(operations, list) or not operations:

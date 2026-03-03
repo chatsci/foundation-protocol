@@ -40,6 +40,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument(
         "--operation",
         action="append",
+        required=True,
         default=[],
         help="Operation mapping in form name=module.path:function_name (repeatable)",
     )
