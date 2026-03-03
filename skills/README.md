@@ -7,11 +7,14 @@ This directory contains the FP Skill layer, intentionally isolated from `src/fp`
 - Skills depend on FP protocol/runtime APIs.
 - FP core does not depend on skills.
 - Manifest-driven bootstrap is the default integration path.
+- Codex/Claude ecosystem skill lives at `skills/fp-onboarding/SKILL.md`.
 
 ## Structure
 
 ```text
 skills/
+  fp-onboarding/
+    SKILL.md
   spec/
     manifest.schema.json
     manifest-v0.1.md
@@ -25,6 +28,21 @@ skills/
       decorators.py
       cli.py
 ```
+
+## Portable skill package (Codex + Claude)
+
+`skills/fp-onboarding/` is a self-contained package:
+
+- `SKILL.md`: onboarding workflow and decision guide
+- `references/`: spec, schema, and integration playbook
+- `scripts/`: manifest generation and validation utilities
+- `assets/templates/`: manifest starter template
+- `agents/openai.yaml`: UI metadata
+
+This makes the skill portable to:
+
+- Codex: `~/.codex/skills/fp-onboarding/`
+- Claude Code: `~/.claude/skills/fp-onboarding/`
 
 ## Quick start
 

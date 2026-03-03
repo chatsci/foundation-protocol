@@ -18,6 +18,7 @@ This repository provides a production-ready Python reference runtime for multi-p
 - Cursor pagination contracts across memory/sqlite stores and runtime listing APIs
 - Schema-first sync artifacts (`spec -> generated manifest`) with CI drift gate
 - Runnable scenario examples + smoke tests
+- Portable skill package for Codex/Claude onboarding (`skills/fp-onboarding`)
 - MkDocs + mkdocstrings documentation site with GitHub Pages deployment
 
 ## Installation
@@ -114,9 +115,22 @@ This repo now includes an isolated skills layer at `skills/` for ultra-low-frict
 
 What it includes:
 
+- `skills/fp-onboarding/`: portable Codex/Claude skill bundle (`SKILL.md`, references, scripts, assets)
 - `skills/spec/manifest.schema.json`: `FP Skill Manifest v0.1` schema
 - `skills/python/fp_skill/`: Python Skill SDK (`manifest`, `runtime`, `decorators`, `cli`)
 - `skills/examples/weather.skill.json`: runnable manifest example
+
+Install portable skill bundle:
+
+```bash
+# Codex
+mkdir -p ~/.codex/skills
+cp -R skills/fp-onboarding ~/.codex/skills/fp-onboarding
+
+# Claude Code
+mkdir -p ~/.claude/skills
+cp -R skills/fp-onboarding ~/.claude/skills/fp-onboarding
+```
 
 Validate a skill manifest:
 

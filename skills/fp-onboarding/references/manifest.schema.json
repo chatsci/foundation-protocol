@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://foundationprotocol.org/skills/manifest.schema.json",
+  "title": "FP Skill Manifest v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "skill_spec_version",
+    "fp_version",
+    "entity",
+    "connection",
+    "auth",
+    "defaults",
+    "operations"
+  ],
+  "properties": {
+    "skill_spec_version": {
+      "type": "string",
+      "const": "0.1"
+    },
+    "fp_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entity": {
+      "$ref": "#/$defs/entity"
+    },
+    "connection": {
+      "$ref": "#/$defs/connection"
+    },
+    "auth": {
+      "$ref": "#/$defs/auth"
+    },
+    "defaults": {
+      "$ref": "#/$defs/defaults"
+    },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/operation"
+      }
+    }
+  },
+  "$defs": {
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entity_id", "kind", "capability_purpose"],
+      "properties": {
+        "entity_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "agent",
+            "tool",
+            "resource",
+            "human",
+            "organization",
+            "institution",
+            "service",
+            "ui"
+          ]
+        },
+        "display_name": {
+          "type": ["string", "null"]
+        },
+        "capability_purpose": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "connection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["inproc", "http_jsonrpc"]
+        },
+        "rpc_url": {
+          "type": ["string", "null"]
+        },
+        "timeout_seconds": {
+          "type": "number",
+          "minimum": 0.1
+        },
+        "keep_alive": {
+          "type": "boolean"
+        }
+      }
+    },
+    "auth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["none", "bearer_env", "bearer_static"]
+        },
+        "token_env": {
+          "type": ["string", "null"]
+        },
+        "token": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "defaults": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["auto_session"],
+      "properties": {
+        "auto_session": {
+          "type": "boolean"
+        },
+        "policy_ref": {
+          "type": ["string", "null"]
+        },
+        "token_limit": {
+          "type": ["integer", "null"],
+          "minimum": 0
+        },
+        "result_compaction_bytes": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "default_roles": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1},
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "handler"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "handler": {
+          "type": "string",
+          "pattern": "^[A-Za-z_][A-Za-z0-9_\\.]*:[A-Za-z_][A-Za-z0-9_]*$"
+        },
+        "description": {
+          "type": ["string", "null"]
+        }
+      }
+    }
+  }
+}

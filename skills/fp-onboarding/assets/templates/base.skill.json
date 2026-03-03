@@ -1,0 +1,45 @@
+{
+  "skill_spec_version": "0.1",
+  "fp_version": "0.1.0",
+  "entity": {
+    "entity_id": "__ENTITY_ID__",
+    "kind": "__ENTITY_KIND__",
+    "display_name": "__DISPLAY_NAME__",
+    "capability_purpose": [
+      "__CAPABILITY_1__"
+    ],
+    "metadata": {}
+  },
+  "connection": {
+    "mode": "inproc",
+    "rpc_url": null,
+    "timeout_seconds": 10.0,
+    "keep_alive": true
+  },
+  "auth": {
+    "mode": "none",
+    "token_env": null,
+    "token": null
+  },
+  "defaults": {
+    "auto_session": true,
+    "policy_ref": "policy:default",
+    "token_limit": 4096,
+    "result_compaction_bytes": 4096,
+    "default_roles": {
+      "__ENTITY_ID__": [
+        "provider"
+      ],
+      "fp:system:skill-orchestrator": [
+        "coordinator"
+      ]
+    }
+  },
+  "operations": [
+    {
+      "name": "__OPERATION_NAME__",
+      "handler": "__MODULE_PATH__:__FUNCTION_NAME__",
+      "description": null
+    }
+  ]
+}

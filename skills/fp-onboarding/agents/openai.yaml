@@ -1,0 +1,3 @@
+interface:
+  display_name: "FP Onboarding"
+  short_description: "Portable onboarding workflow for connecting existing runtimes into Foundation Protocol"
